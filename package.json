@@ -1,0 +1,48 @@
+{
+  "name": "@gopowerteam/http-request-cli",
+  "version": "0.1.3",
+  "description": "",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "gopowerteam",
+    "http-request",
+    "http-request-cli"
+  ],
+  "scripts": {
+    "dev": "ts-node -P ./tsconfig.json ./index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rimraf dist/",
+    "copy-files": "copyfiles -u 1 templates/**/* dist/templates/",
+    "build": "yarn clean && tsc --declaration --esModuleInterop --outDir dist && yarn copy-files"
+  },
+  "bin": {
+    "http-request-cli": "./dist/index.js"
+  },
+  "author": "zhuchentong",
+  "dependencies": {
+    "node-fetch": "^2.6.1",
+    "mkdirp": "^1.0.4",
+    "handlebars": "^4.7.7"
+  },
+  "devDependencies": {
+    "@gopowerteam/http-request": "^0.1.2",
+    "@types/node": "^15.0.2",
+    "copyfiles": "^2.4.1",
+    "rimraf": "^3.0.2",
+    "ts-node": "^9.1.1",
+    "tslib": "^2.2.0",
+    "typescript": "^4.2.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gopowerteam/package.http-request.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gopowerteam/package.http-request/issues"
+  },
+  "homepage": "https://github.com/gopowerteam/package.http-request",
+  "license": "MIT"
+}
