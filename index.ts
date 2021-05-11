@@ -2,10 +2,16 @@
 
 import fetch from 'node-fetch'
 import { registerHelper } from 'handlebars'
-import { generateControllerFile, generateControllerFiles } from './generate/controller'
+import { generateControllerFiles } from './generate/controller'
 import { generateServiceFiles } from './generate/service'
 import { loadConfig } from './utils'
+import { Command } from 'commander'
+import path from 'path'
 
+const program = new Command();
+program.version(require(path.join(__dirname, './package.json')).version);
+
+const config = loadConfig()
 // 扩展模版命令toUpperCase
 registerHelper('toUpperCase', function (str) {
     return str.toUpperCase()
@@ -19,20 +25,20 @@ registerHelper('toLowerCase', function (str) {
 /**
  * 生成服务
  */
-export function generateService({ gateway, services }) {
+export function generateService({ gateway, services, version }) {
     if (services && Object.keys(services).length) {
         // 多服务模式
         return Object.entries(services).map(([key, service]) => ({
             key: key,
             name: service,
-            url: `${gateway}/${service}/v2/api-docs`
+            url: `${gateway}/${service}/${version}/api-docs`
         }))
     } else {
         // 单服务模式
         return [{
             key: '',
             name: '',
-            url: `${gateway}/v2/api-docs`
+            url: `${gateway}/${version}/api-docs`
         }]
     }
 }
@@ -40,9 +46,9 @@ export function generateService({ gateway, services }) {
 /**
  * 获取控制器名称
  */
-export function getControllerName(tags, targetTag) {
-    const tag = tags.find((x) => x.name === targetTag)
-    return tag.description.replace(/\s/g, '').replace(/Controller$/, '')
+export function getControllerName(path, currentTag, tags) {
+    const [controller] = path.match(/(?<=\b\api\/).*(?=\/\b)/g);
+    return controller.replace(/^\S/, s => s.toUpperCase())
 }
 
 /**
@@ -57,12 +63,13 @@ export function getActionName(operation) {
  * @param paths
  */
 export function generateControllers(
+    service: string,
     controllers: any[],
     paths: { [keys: string]: any },
     tags: any[]
 ) {
     Object.entries(paths)
-        .filter(([key]) => key.startsWith('/api'))
+        .filter(([key]) => key.startsWith('/api') || key.startsWith(service))
         .forEach(([key, config]: [string, { [keys: string]: any }]) => {
             // 接口路径
             const path = key
@@ -72,11 +79,12 @@ export function generateControllers(
                     method,
                     {
                         summary,
-                        tags: [targetTag],
+                        tags: currentTag,
                         operationId
                     }
                 ]) => {
-                    const controller = getControllerName(tags, targetTag)
+                    const getController = config.getControllerResolver ? config.getControllerResolver : getControllerName
+                    const controller = getController(path, currentTag, tags)
                     const action = getActionName(operationId)
                     const filename = controller
                         .replace(/([A-Z])/g, '-$1')
@@ -134,7 +142,7 @@ export function generate(service) {
                 // 控制器列表
                 const controllers: any = []
                 // 填装控制器列表
-                generateControllers(controllers, paths, tags)
+                generateControllers(service, controllers, paths, tags)
                 // 生产文件
                 generateControllerFiles(service, controllers)
                 generateServiceFiles(service, controllers)
@@ -144,8 +152,18 @@ export function generate(service) {
 
 
 export async function startup() {
-    const config = loadConfig()
-    generateService({ gateway: config.gateway, services: config.services }).forEach(generate)
+    program.option('-g, --generate', 'generate http request controller&service')
+    program.parse(process.argv);
+    const options = program.opts();
+
+    if (options.generate) {
+        generateService({
+            gateway: config.gateway,
+            services: config.services,
+            version: config.apiVersion
+        }).forEach(generate)
+    }
+
 }
 
 startup()

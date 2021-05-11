@@ -1,6 +1,6 @@
 {
   "name": "@gopowerteam/http-request-cli",
-  "version": "0.1.3",
+  "version": "0.1.5",
   "description": "",
   "main": "dist/index.js",
   "files": [
@@ -12,7 +12,7 @@
     "http-request-cli"
   ],
   "scripts": {
-    "dev": "ts-node -P ./tsconfig.json ./index.ts",
+    "dev": "ts-node -P ./tsconfig.json ./index.ts -g",
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rimraf dist/",
     "copy-files": "copyfiles -u 1 templates/**/* dist/templates/",
@@ -23,9 +23,10 @@
   },
   "author": "zhuchentong",
   "dependencies": {
-    "node-fetch": "^2.6.1",
+    "commander": "^7.2.0",
+    "handlebars": "^4.7.7",
     "mkdirp": "^1.0.4",
-    "handlebars": "^4.7.7"
+    "node-fetch": "^2.6.1"
   },
   "devDependencies": {
     "@gopowerteam/http-request": "^0.1.2",
