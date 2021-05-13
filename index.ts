@@ -9,7 +9,7 @@ import { Command } from 'commander'
 import path from 'path'
 
 const program = new Command();
-program.version(require(path.join(__dirname, './package.json')).version);
+program.version(require(path.join(__dirname, '../package.json')).version);
 
 const config = loadConfig()
 // 扩展模版命令toUpperCase
@@ -63,13 +63,13 @@ export function getActionName(operation) {
  * @param paths
  */
 export function generateControllers(
-    service: string,
+    service: { key: string, name: string, url: string },
     controllers: any[],
     paths: { [keys: string]: any },
     tags: any[]
 ) {
     Object.entries(paths)
-        .filter(([key]) => key.startsWith('/api') || key.startsWith(service))
+        .filter(([key]) => key.startsWith('/api') || key.startsWith(`/${service.name}`))
         .forEach(([key, config]: [string, { [keys: string]: any }]) => {
             // 接口路径
             const path = key

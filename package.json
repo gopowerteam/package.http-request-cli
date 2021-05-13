@@ -1,10 +1,11 @@
 {
   "name": "@gopowerteam/http-request-cli",
-  "version": "0.1.5",
+  "version": "0.1.9",
   "description": "",
   "main": "dist/index.js",
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
   "keywords": [
     "gopowerteam",
@@ -16,7 +17,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rimraf dist/",
     "copy-files": "copyfiles -u 1 templates/**/* dist/templates/",
-    "build": "yarn clean && tsc --declaration --esModuleInterop --outDir dist && yarn copy-files"
+    "build": "yarn clean && tsc --declaration --esModuleInterop --outDir dist && yarn copy-files",
+    "publish-npm": "npm run build && npm publish --access publish"
   },
   "bin": {
     "http-request-cli": "./dist/index.js"
