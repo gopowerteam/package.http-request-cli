@@ -72,7 +72,9 @@ export function generateControllers(
         .filter(([key]) => key.startsWith('/api') || key.startsWith(`/${service.name}`))
         .forEach(([key, config]: [string, { [keys: string]: any }]) => {
             // 接口路径
-            const path = key
+            const matchServieName = `/${service.name}`
+            // 多服务去除service.name
+            const path =  key.startsWith(matchServieName) ? key.substr(matchServieName.length) : key
             // 接口行为
             Object.entries(config).forEach(
                 ([
