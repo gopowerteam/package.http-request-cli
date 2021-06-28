@@ -2,7 +2,7 @@ module.exports = {
   gateway: "http://gateway.local.xbt-dev.top",
   apiVersion: "v2",
   controllerDir: {
-    alias: "../../controller",
+    alias: "@/http/controller",
     path: "./data/controller",
   },
   serviceDir: {

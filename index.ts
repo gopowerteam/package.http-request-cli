@@ -4,12 +4,10 @@ import fetch from 'node-fetch'
 import { registerHelper } from 'handlebars'
 import { generateControllerFiles } from './generate/controller'
 import { generateServiceFiles } from './generate/service'
-import { loadConfig } from './utils'
+import { info, loadConfig, log } from './utils'
 import { Command } from 'commander'
-import path from 'path'
 
 const program = new Command();
-program.version(require(path.join(__dirname, '../package.json')).version);
 
 const config = loadConfig()
 // 扩展模版命令toUpperCase
@@ -26,7 +24,10 @@ registerHelper('toLowerCase', function (str) {
  * 生成服务
  */
 export function generateService({ gateway, services, version }) {
+    info('-------------------------')
+    info('Swagger版本', config.apiVersion)
     if (services && Object.keys(services).length) {
+        info('服务模式', '多服务')
         // 多服务模式
         return Object.entries(services).map(([key, service]) => ({
             key: key,
@@ -34,6 +35,7 @@ export function generateService({ gateway, services, version }) {
             url: `${gateway}/${service}/${version}/api-docs`
         }))
     } else {
+        info('服务模式', '单服务')
         // 单服务模式
         return [{
             key: '',
@@ -41,6 +43,7 @@ export function generateService({ gateway, services, version }) {
             url: `${gateway}/${version}/api-docs`
         }]
     }
+
 }
 
 /**
@@ -70,11 +73,11 @@ export function generateControllers(
 ) {
     Object.entries(paths)
         .filter(([key]) => key.startsWith('/api') || key.startsWith(`/${service.name}`))
-        .forEach(([key, config]: [string, { [keys: string]: any }]) => {
-            // 接口路径
-            const matchServieName = `/${service.name}`
-            // 多服务去除service.name
-            const path =  key.startsWith(matchServieName) ? key.substr(matchServieName.length) : key
+        .map(([key, config]: [string, { [keys: string]: any }]) => ({
+            path: key.replace(new RegExp(`^\/${service.name}\/`), "/"),
+            config
+        }))
+        .forEach(({ path, config }) => {
             // 接口行为
             Object.entries(config).forEach(
                 ([
@@ -141,6 +144,10 @@ export function generate(service) {
                 tags: any[]
                 paths: { [keys: string]: any }
             }) => {
+                info('-------------------------')
+                info('服务名称', service.name)
+                info('服务路径', service.url)
+                info('-------------------------')
                 // 控制器列表
                 const controllers: any = []
                 // 填装控制器列表
@@ -154,7 +161,10 @@ export function generate(service) {
 
 
 export async function startup() {
-    program.option('-g, --generate', 'generate http request controller&service')
+    program
+        .description('a cli program for http-request-cli')
+        .option('-g, --generate', 'generate http request controller&service')
+
     program.parse(process.argv);
     const options = program.opts();
 

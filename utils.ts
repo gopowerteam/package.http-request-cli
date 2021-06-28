@@ -1,4 +1,4 @@
-import fs from 'fs'
+import chalk from 'chalk'
 import path from 'path'
 
 const CONFIG_FILE = 'http-request-cli.config.js'
@@ -22,4 +22,12 @@ export function loadConfig() {
     }
 
     return CONFIG_DATA
+}
+
+export function log(type, message) {
+    console.log(chalk`{blue.bold [${type}]} {gray ${message}}`)
+}
+
+export function info(type, message='') {
+    console.log(chalk`{red.bold ${type}} {green.bold ${message}}`)
 }

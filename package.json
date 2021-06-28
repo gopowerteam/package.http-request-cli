@@ -1,6 +1,6 @@
 {
   "name": "@gopowerteam/http-request-cli",
-  "version": "0.1.9",
+  "version": "0.2.1",
   "description": "",
   "main": "dist/index.js",
   "files": [
@@ -25,6 +25,7 @@
   },
   "author": "zhuchentong",
   "dependencies": {
+    "chalk": "^4.1.1",
     "commander": "^7.2.0",
     "handlebars": "^4.7.7",
     "mkdirp": "^1.0.4",

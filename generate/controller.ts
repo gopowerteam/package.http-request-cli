@@ -1,7 +1,7 @@
 import { compile } from 'handlebars'
 import { readFileSync, writeFileSync } from 'fs'
 import { resolve, dirname } from 'path'
-import { loadConfig } from '../utils'
+import { loadConfig, log } from '../utils'
 import mkdirp from 'mkdirp'
 
 const TEMPLATE_FOLDER = resolve(__dirname, '..', 'templates')
@@ -24,7 +24,7 @@ export function generateControllerFile(service, controller) {
     )
     writeControllerFile(service.key, controller, controllerFileContent).then(
         (filename) => {
-            console.log(`${filename}-生成完成`)
+            log('Controller File Generate', `${filename}`)
         }
     )
 }
