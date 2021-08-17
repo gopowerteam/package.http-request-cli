@@ -102,11 +102,12 @@ services:{
 
 vite.config.ts
 ```
-import { request } from '@gopowerteam/http-request-cli/vite.plugin'
+import { requestPlugin } from '@gopowerteam/http-request-cli'
+
 
 ...
 plugins: [
-  request({
+  requestPlugin({
         root: path.resolve(__dirname, 'src'),
         alias: '~',
         serviceDir: 'http/services',
