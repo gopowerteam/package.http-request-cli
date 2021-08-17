@@ -14,6 +14,7 @@
   - [示例](#示例)
   - [配置](#配置)
   - [自定义ControllerResolver](#自定义ControllerResolver)
+  - [Vite插件支持](#Vite插件支持)
   
 
 ## 安装
@@ -95,3 +96,34 @@ services:{
   }
 ```
 
+## Vite插件支持
+
+支持作为`vite`插件使用,这样可以不需要导入对应的`service`类
+
+vite.config.ts
+```
+import { request } from '@gopowerteam/http-request-cli/vite.plugin'
+
+...
+plugins: [
+  request({
+        root: path.resolve(__dirname, 'src'),
+        alias: '~',
+        serviceDir: 'http/services',
+        serviceDeclaration: 'typings/request.d.ts'
+  })
+]
+```
+
+
+配置插件后使用时如下即可:
+
+```
+import { useRequest } from 'virtual:http-request'
+
+const posterService = useRequest(
+  services => services.PosterService
+)
+
+posterService.create(new RequestParams(...))
+```
