@@ -133,7 +133,13 @@ function generateImportCode(
   placeholder = ""
 ) {
   return services
-    .map((service) => `import { ${service.name} } from '${service.path}'`)
+    .map(
+      (service) =>
+        `import { ${service.name} } from '${service.path.replace(
+          /\.ts$/g,
+          ""
+        )}'`
+    )
     .join(`\r\n${placeholder}`);
 }
 
