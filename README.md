@@ -85,6 +85,20 @@ services:{
 // value为请求调用的service名称
 ```
 
+> 多网管按数组配置即可
+
+```javascript
+module.exports = [
+  {
+    ...
+  },
+  {
+    ...
+  }
+];
+
+```
+
 ## 自定义ControllerResolver
 
 默认情况下会通过path来分析对应的`Controller`名称来生成文件名和类名,在一些情况下如果不满足需要可以自定义`ControllerResolver`来解决
@@ -94,6 +108,12 @@ services:{
     const tag = tags.find((x) => x.name === currentTag[0]);
     return tag.description.replace(/\s/g, "").replace(/Controller$/, "");
   }
+```
+
+需要服务重命名也可以使用`controllerResolver`
+
+```json
+controllerResolver: () => "New Name"
 ```
 
 ## Vite插件支持
