@@ -36,7 +36,7 @@
 ```javascript
 module.exports = {
   "gateway": "http://gateway.xxx.com",
-  "apiVersion:": "v2",
+  "swagger:": "v2/api-docs",
   "controllerDir": {
     "alias": "../controller",   // 控制器目录名别
     "path": "./src/controller"  // 控制器目录路径
@@ -63,7 +63,7 @@ module.exports = {
 |        名称         |            描述            | 必填  |
 | :-----------------: | :------------------------: | :---: |
 |       gateway       |      服务器/网管地址       |  是   |
-|     apiVersion      |      Swagger Api 版本      |  是   |
+|       swagger       |    SwaggerJSON Api 地址    |  是   |
 | controllerDir.alias | 接口controller目录别名配置 |  是   |
 | controllerDir.path  | 接口controller目录路径配置 |  是   |
 |  serviceDir.alias   |  接口service目录别名配置   |  是   |

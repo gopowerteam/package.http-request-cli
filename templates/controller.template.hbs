@@ -7,11 +7,13 @@ import { RequestMethod } from '@gopowerteam/http-request'
 // 控制器名称
 const controller = '{{controller}}'
 const service = '{{service}}'
+const gateway = '{{gateway}}'
 
 export const {{controllerClass}} = {
 {{#each actions}}
-    // {{summary}}
+    // {{comment}}
     {{action}}: {
+        gateway,
         service,
         controller,
         path: '{{path}}',

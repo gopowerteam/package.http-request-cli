@@ -1,17 +1,15 @@
-module.exports = {
-  gateway: "http://gateway.local.xbt-dev.top",
-  apiVersion: "v2",
-  controllerDir: {
-    alias: "@/http/controller",
-    path: "./data/controller",
+module.exports = [
+  {
+    gateway: "http://localhost:3000",
+    swagger: "api-docs-json",
+    controllerDir: {
+      alias: "@/http/controller",
+      path: "./data/controller",
+    },
+    serviceDir: {
+      alias: "@/http/services",
+      path: "./data/services",
+    },
+    // controllerResolver: () => "app",
   },
-  serviceDir: {
-    alias: "@/http/services",
-    path: "./data/services",
-  },
-  services: {
-    "xbt-platform-dingtalk-service": "xbt-platform-dingtalk-service",
-    "xbt-platform-salary-service": "xbt-platform-salary-service",
-    "xbt-platform-kyb-service": "xbt-platform-kyb-service",
-  },
-};
+];
