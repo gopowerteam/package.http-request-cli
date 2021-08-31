@@ -24,6 +24,9 @@
   "bin": {
     "http-request-cli": "./dist/index.js"
   },
+  "peerDependencies": {
+    "@gopowerteam/http-request": "^0.3.0"
+  },
   "author": "zhuchentong",
   "dependencies": {
     "chalk": "^4.1.1",
