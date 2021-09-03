@@ -6,7 +6,6 @@ import { generateControllerFiles } from "./generate/controller";
 import { generateServiceFiles } from "./generate/service";
 import { info, loadConfig } from "./utils";
 import { Command } from "commander";
-export { default as requestPlugin } from "./vite.plugin";
 
 const program = new Command();
 
