@@ -31,12 +31,13 @@ export function generateService(config) {
   info("Swagger地址", swagger);
   if (services && Object.keys(services).length) {
     info("服务模式", "多服务");
+    console.log(13123, config);
     // 多服务模式
     return Object.entries(services).map(([key, service]) => ({
       key: key,
       name: service,
       url: `${gateway}/${service}/${swagger}`,
-      gateway,
+      gateway: config.name,
       config,
     }));
   } else {
@@ -46,8 +47,8 @@ export function generateService(config) {
       {
         key: "",
         name: "",
+        gateway: config.name,
         url: `${gateway}/${swagger}`,
-        gateway,
         config,
       },
     ];
@@ -74,6 +75,12 @@ export function getControllerName(path, currentTag, tags) {
  */
 export function getActionName(operation) {
   return operation.replace(/Using.*?$/, "");
+}
+
+function getAliasName(config, key) {
+  if (config.alias && key in config.alias) {
+    return config.alias[key];
+  }
 }
 
 /**
@@ -107,7 +114,10 @@ export function generateControllers(
           const getController = service.config.controllerResolver
             ? service.config.controllerResolver
             : getControllerName;
-          const controller = getController(path, currentTag, tags);
+          const controllerName = getController(path, currentTag, tags);
+          const aliasName = getAliasName(service.config, controllerName);
+
+          const controller = aliasName || controllerName;
           const action = getActionName(operationId);
           const filename = controller
             .replace(/([A-Z])/g, "-$1")
