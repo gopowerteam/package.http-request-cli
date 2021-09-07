@@ -31,7 +31,6 @@ export function generateService(config) {
   info("Swagger地址", swagger);
   if (services && Object.keys(services).length) {
     info("服务模式", "多服务");
-    console.log(13123, config);
     // 多服务模式
     return Object.entries(services).map(([key, service]) => ({
       key: key,
