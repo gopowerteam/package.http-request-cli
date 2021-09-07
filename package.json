@@ -1,6 +1,6 @@
 {
   "name": "@gopowerteam/http-request-cli",
-  "version": "0.3.6",
+  "version": "0.4.0",
   "description": "",
   "main": "dist/index.js",
   "files": [
@@ -14,7 +14,7 @@
     "http-request-cli"
   ],
   "scripts": {
-    "dev": "ts-node -P ./tsconfig.json ./index.ts -g",
+    "dev": "ts-node -P ./tsconfig.json ./cli.ts -g",
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rimraf dist/",
     "copy-files": "copyfiles -u 1 templates/**/* dist/templates/",
@@ -22,7 +22,7 @@
     "publish-npm": "npm run build && npm publish --access publish"
   },
   "bin": {
-    "http-request-cli": "./dist/index.js"
+    "hrc": "./dist/index.js"
   },
   "peerDependencies": {
     "@gopowerteam/http-request": "^0.3.0"

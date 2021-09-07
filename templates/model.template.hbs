@@ -1,0 +1,8 @@
+export class {{className}} extends Model {
+{{#each properties}}
+  {{#if originalRef}}
+  @Type(() => {{originalRef}})
+  {{/if}}
+  public {{propertyName}} : {{propertyType}}
+{{/each}}
+}
