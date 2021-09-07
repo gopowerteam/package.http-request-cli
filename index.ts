@@ -76,9 +76,20 @@ export function getActionName(operation) {
   return operation.replace(/Using.*?$/, "");
 }
 
-function getAliasName(config, key) {
-  if (config.alias && key in config.alias) {
-    return config.alias[key];
+function getAliasName(config, service, key) {
+  if (!config.alias) {
+    return;
+  }
+
+  if (Array.isArray(config.alias)) {
+    const target = config.alias.find((x) => x.service === service);
+    if (target && target.from === key) {
+      return target.to;
+    }
+  } else {
+    if (config.alias.from === key) {
+      return config.alias.to;
+    }
   }
 }
 
@@ -114,7 +125,11 @@ export function generateControllers(
             ? service.config.controllerResolver
             : getControllerName;
           const controllerName = getController(path, currentTag, tags);
-          const aliasName = getAliasName(service.config, controllerName);
+          const aliasName = getAliasName(
+            service.config,
+            service.key,
+            controllerName
+          );
 
           const controller = aliasName || controllerName;
           const action = getActionName(operationId);
