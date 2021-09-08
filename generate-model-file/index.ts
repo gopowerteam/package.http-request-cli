@@ -25,13 +25,12 @@ export async function generateModelFiles(service, definitions) {
   const modelFileContent = [modelImportContent, modelClassContent].join("\r\n");
 
   await writeModelFile(service, modelFileContent);
-  await writeModelExtendFile(service);
 }
 
 function getImportContent() {
   return [
     `import { Type } from 'class-transformer'`,
-    `import { Model } from '.'`,
+    `import { Model } from '@gopowerteam/http-request'`,
     "\r\n",
   ].join("\r\n");
 }
@@ -103,23 +102,4 @@ export async function writeModelFile(service, content) {
 
   await mkdirp.sync(dirname(path));
   await writeFileSync(path, content, ENCODING);
-}
-
-/**
- * 生成控制器文件
- * @param service
- * @param param1
- * @param content
- */
-export async function writeModelExtendFile(service) {
-  const modelDirectionPath = service.config.model.modelDir;
-  const path = resolve(modelDirectionPath, `index.ts`);
-
-  if (!existsSync(path)) {
-    await mkdirp.sync(dirname(path));
-    const templateSource = readFileSync(modelExtendTemplatePath, ENCODING);
-    const template = compile(templateSource);
-    const content = template({});
-    await writeFileSync(path, content, ENCODING);
-  }
 }
