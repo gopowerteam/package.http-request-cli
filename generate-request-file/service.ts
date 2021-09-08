@@ -17,12 +17,21 @@ export function generateServiceFiles(service, controllers) {
 export function generateServiceFile(service, controller) {
   let templateSource = readFileSync(serviceTemplatePath, ENCODING);
   let template = compile(templateSource);
+  const schemas = [
+    ...new Set(
+      controller.actions
+        .map((action) => action.schema && action.schema.replace("[]", ""))
+        .filter((x) => !!x)
+    ),
+  ];
   let serviceFileContent = template(
     Object.assign(controller, {
       service: service.key,
       controllerDir: [service.config.controllerAlias, service.key]
         .filter((x) => x)
         .join("/"),
+      modelDir: [service.config.modelAlias].filter((x) => x).join("/"),
+      schemas: schemas.length ? schemas : undefined,
     })
   );
   writeServiceFile(

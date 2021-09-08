@@ -5,6 +5,9 @@
 import { Request, RequestParams } from '@gopowerteam/http-request'
 import type { Observable } from 'rxjs'
 import { {{controllerClass}} } from '{{controllerDir}}/{{controller}}.controller'
+{{#if schemas}}
+import { {{#each schemas}}{{this}}{{#unless @last}},{{/unless}}{{/each}} } from '{{modelDir}}/{{service}}.model'
+{{/if}}
 
 export class {{serviceClass}} {
 {{#each actions}}
@@ -12,11 +15,18 @@ export class {{serviceClass}} {
    * {{comment}}
    */
   @Request({
-    server: {{../controllerClass}}.{{action}}
+    server: {{../controllerClass}}.{{action}},
+    {{#if schema}}
+    model: {{schema}}
+    {{/if}}
   })
   public {{action}}(
     params?: RequestParams | { [key: string]: any }
+  {{#if schema}}
+  ): Observable<{{schema}}> {
+  {{else}}
   ): Observable<any> {
+  {{/if}}
     return RequestParams.create(params).request();
   }
   {{/each}}

@@ -19,6 +19,8 @@ export function loadConfig() {
     controllerDir: path.resolve(config.controllerDir.path),
     serviceAlias: config.serviceDir.alias,
     serviceDir: path.resolve(config.serviceDir.path),
+    modelAlias: config.modelDir?.alias,
+    modelDir: config.modelDir?.path && path.resolve(config.modelDir?.path),
   });
 
   if (Array.isArray(configJson)) {

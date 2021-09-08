@@ -3,9 +3,10 @@ module.exports = [
     name: "default",
     gateway: "http://gateway.local.xbt-dev.top",
     swagger: "v2/api-docs",
-    model: {
-      enable: true,
-      modelDir: "./src/http/model",
+    model: true,
+    modelDir: {
+      alias: "@/http/model", // 控制器目录名别
+      path: "./src/http/model", // 控制器目录路径
     },
     controllerDir: {
       alias: "@/http/controller", // 控制器目录名别
@@ -31,8 +32,6 @@ module.exports = [
     name: "authorization",
     gateway: "https://authorization.local.xbt-dev.top",
     swagger: "api-docs-json",
-    model: true,
-    modelDir: "./data/controller",
     controllerDir: {
       alias: "@/http/controller",
       path: "./data/controller",

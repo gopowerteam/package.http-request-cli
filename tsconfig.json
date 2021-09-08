@@ -13,6 +13,9 @@
     "sourceMap": false,
     "skipLibCheck": true,
     "baseUrl": ".",
-    "lib": ["esnext"]
+    "lib": ["esnext"],
+    "paths": {
+      "@/*": ["src/*"]
+    }
   }
 }

@@ -91,6 +91,27 @@ function getAliasName(config, service, key) {
   }
 }
 
+function getPropertyType(schema) {
+  switch (true) {
+    case !!schema.originalRef:
+      return schema.originalRef.replace(/^Page«/, "").replace(/»$/, "[]");
+    case schema.type === "array":
+      return `${getPropertyType(schema.items)}[]`;
+  }
+}
+
+function getActionReponseShema(service, responses) {
+  const response = responses["200"];
+
+  if (!response || !response.schema || !service.config.model) {
+    return;
+  }
+
+  const { schema } = response;
+
+  return getPropertyType(schema);
+}
+
 /**
  * 获取Action列表
  * @param paths
@@ -118,7 +139,10 @@ export function createControllers(
     .forEach(({ path, config }) => {
       // 接口行为
       Object.entries(config).forEach(
-        ([method, { summary, description, tags: currentTag, operationId }]) => {
+        ([
+          method,
+          { summary, description, tags: currentTag, operationId, responses },
+        ]) => {
           const getController = service.config.controllerResolver
             ? service.config.controllerResolver
             : getControllerName;
@@ -128,7 +152,6 @@ export function createControllers(
             service.key,
             controllerName
           );
-
           const controller = aliasName || controllerName;
           const action = getActionName(operationId);
           const filename = controller
@@ -159,6 +182,7 @@ export function createControllers(
             action: (action || method).replace(/-(\w)/g, ($, $1) =>
               $1.toUpperCase()
             ),
+            schema: getActionReponseShema(service, responses),
             defaultAction: !action,
             method: method.replace(/^\S/, (s) => s.toUpperCase()),
             comment: summary ?? description,

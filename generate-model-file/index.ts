@@ -10,7 +10,7 @@ export const modelTemplatePath = `${TEMPLATE_FOLDER}/model.template.hbs`;
 export const modelExtendTemplatePath = `${TEMPLATE_FOLDER}/model-extend.template.hbs`;
 
 export async function generateModelFiles(service, definitions) {
-  if (!service.config.model || !service.config.model.enable) {
+  if (!service.config.model || !service.config.modelDir) {
     return;
   }
 
@@ -31,7 +31,7 @@ function getImportContent() {
   return [
     `import { Type } from 'class-transformer'`,
     `import { Model } from '@gopowerteam/http-request'`,
-    "\r\n",
+    '\r\n'
   ].join("\r\n");
 }
 
@@ -96,7 +96,7 @@ function getPropertyType(config) {
  * @param content
  */
 export async function writeModelFile(service, content) {
-  const modelDirectionPath = service.config.model.modelDir;
+  const modelDirectionPath = service.config.modelDir;
 
   const path = resolve(modelDirectionPath, `${service.key}.model.ts`);
 
