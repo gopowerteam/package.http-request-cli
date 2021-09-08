@@ -6,19 +6,20 @@ module.exports = [
     model: true,
     modelDir: {
       alias: "@/http/model", // 控制器目录名别
-      path: "./src/http/model", // 控制器目录路径
+      path: "./data/model", // 控制器目录路径
     },
     controllerDir: {
       alias: "@/http/controller", // 控制器目录名别
-      path: "./src/http/controller", // 控制器目录路径
+      path: "./data/controller", // 控制器目录路径
     },
     serviceDir: {
       alias: "@/http/services", // 服务目录名别
-      path: "./src/http/services", // 服务目录名别
+      path: "./data/services", // 服务目录名别
     },
     services: {
       "communication-service": "xbt-platform-communication-service",
       "wechat-service": "xbt-platform-wxcp-service",
+      "eky-service": "xbt-platform-data-service",
     },
     alias: [
       {

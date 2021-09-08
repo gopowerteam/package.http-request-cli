@@ -17,6 +17,7 @@ export function generateServiceFiles(service, controllers) {
 export function generateServiceFile(service, controller) {
   let templateSource = readFileSync(serviceTemplatePath, ENCODING);
   let template = compile(templateSource);
+
   const schemas = [
     ...new Set(
       controller.actions

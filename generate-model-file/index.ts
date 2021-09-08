@@ -31,7 +31,7 @@ function getImportContent() {
   return [
     `import { Type } from 'class-transformer'`,
     `import { Model } from '@gopowerteam/http-request'`,
-    '\r\n'
+    "\r\n",
   ].join("\r\n");
 }
 
@@ -44,6 +44,7 @@ function getDefinitionItems(definitions): any[] {
     }))
     .filter(
       ({ className, type }) =>
+        !className.startsWith("Map«") &&
         !className.startsWith("Page«") &&
         !className.startsWith("Pageable") &&
         type == "object"

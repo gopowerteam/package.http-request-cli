@@ -97,9 +97,11 @@ function getAliasName(config, service, key) {
 function getPropertyType(schema) {
   switch (true) {
     case !!schema.originalRef:
+      if (schema.originalRef.startsWith("Map«")) return;
       return schema.originalRef.replace(/^Page«/, "").replace(/»$/, "[]");
     case schema.type === "array":
-      return `${getPropertyType(schema.items)}[]`;
+      const type = getPropertyType(schema.items);
+      return type && `${type}[]`;
   }
 }
 
