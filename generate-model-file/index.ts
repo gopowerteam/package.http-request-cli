@@ -68,6 +68,7 @@ function getformatProperty(properties) {
         propertyName,
         propertyType: getPropertyType(propertyConfig),
         originalRef: getOriginalRef(propertyConfig),
+        description: propertyConfig.description,
       };
     }
   );
