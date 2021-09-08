@@ -19,6 +19,9 @@ registerHelper("toLowerCase", function (str) {
   return str.toLowerCase();
 });
 
+registerHelper("replace", function (context, findStr, replaceStr) {
+  return context.replace(findStr, replaceStr);
+});
 /**
  * 生成服务
  */

@@ -17,7 +17,7 @@ export class {{serviceClass}} {
   @Request({
     server: {{../controllerClass}}.{{action}},
     {{#if schema}}
-    model: {{schema}}
+    model: {{#replace schema '[]' ''}}{{/replace}}
     {{/if}}
   })
   public {{action}}(
