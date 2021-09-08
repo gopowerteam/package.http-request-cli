@@ -6,7 +6,7 @@ import { Request, RequestParams } from '@gopowerteam/http-request'
 import type { Observable } from 'rxjs'
 import { {{controllerClass}} } from '{{controllerDir}}/{{controller}}.controller'
 {{#if schemas}}
-import { {{#each schemas}}{{this}}{{#unless @last}},{{/unless}}{{/each}} } from '{{modelDir}}/{{service}}.model'
+import { {{#each schemas}}{{this}}{{#unless @last}}, {{/unless}}{{/each}} } from '{{modelDir}}/{{service}}.model'
 {{/if}}
 
 export class {{serviceClass}} {
