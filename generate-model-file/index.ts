@@ -31,7 +31,7 @@ export async function generateModelFiles(service, definitions) {
 function getImportContent() {
   return [
     `import { Type } from 'class-transformer'`,
-    `import Model from './'`,
+    `import { Model } from '.'`,
     "\r\n",
   ].join("\r\n");
 }
@@ -45,7 +45,9 @@ function getDefinitionItems(definitions): any[] {
     }))
     .filter(
       ({ className, type }) =>
-        !className.startsWith("Page«") && type == "object"
+        !className.startsWith("Page«") &&
+        !className.startsWith("Pageable") &&
+        type == "object"
     );
 }
 

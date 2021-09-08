@@ -1,11 +1,10 @@
 {
   "name": "@gopowerteam/http-request-cli",
-  "version": "0.4.0",
+  "version": "0.4.2",
   "description": "",
   "main": "dist/index.js",
   "files": [
     "dist",
-    "vite.plugin",
     "README.md"
   ],
   "keywords": [
@@ -22,7 +21,7 @@
     "publish-npm": "npm run build && npm publish --access publish"
   },
   "bin": {
-    "hrc": "./dist/index.js"
+    "http-request-cli": "./dist/cli.js"
   },
   "peerDependencies": {
     "@gopowerteam/http-request": "^0.3.0"
