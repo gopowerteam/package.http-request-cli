@@ -61,10 +61,14 @@ export function generateService(config) {
 export function getControllerName(path, currentTag, tags) {
   // 无法解析
   try {
-    const [controller] =
+    const [controller]: [string] =
       path.match(/(?<=\b\api\/).*(?=\/\b)/g) ??
       path.match(/(?<=\/).*(?=\/\b)/g);
-    return controller.replace(/^\S/, (s) => s.toUpperCase());
+
+    return controller
+      .split("/")
+      .map((x) => x.replace(/^\S/, (s) => s.toUpperCase()))
+      .join("");
   } catch {
     throw new Error(`路径:${path}不符合规范`);
   }
@@ -83,8 +87,11 @@ function getAliasName(config, service, key) {
   }
 
   if (Array.isArray(config.alias)) {
-    const target = config.alias.find((x) => x.service === service);
-    if (target && target.from === key) {
+    const target = config.alias.find(
+      (x) => x.service === service && x.from === key
+    );
+
+    if (target) {
       return target.to;
     }
   } else {

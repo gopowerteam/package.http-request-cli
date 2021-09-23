@@ -20,12 +20,23 @@ module.exports = [
       "communication-service": "xbt-platform-communication-service",
       "wechat-service": "xbt-platform-wxcp-service",
       "eky-service": "xbt-platform-data-service",
+      "customer-service": "xbt-platform-customer-service",
     },
     alias: [
       {
         service: "wechat-service",
         from: "Department",
         to: "WechatDepartment",
+      },
+      {
+        service: "customer-service",
+        from: "ConsultationRecord",
+        to: "WxConsultationRecord",
+      },
+      {
+        service: "customer-service",
+        from: "Appointment",
+        to: "WxAppointment",
       },
     ],
   },
