@@ -1,7 +1,12 @@
 import chalk from "chalk";
+import fs from "fs";
 import path from "path";
 
-const CONFIG_FILE = "http-request-cli.config.js";
+const CONFIG_FILE = [
+  "http-request-cli.config.cjs",
+  "http-request-cli.config.js",
+];
+
 let CONFIG_DATA: any = null;
 
 /**
@@ -11,7 +16,15 @@ let CONFIG_DATA: any = null;
 export function loadConfig() {
   if (CONFIG_DATA) return CONFIG_DATA;
 
-  const configJson = require(path.resolve("./", CONFIG_FILE));
+  const filePath = CONFIG_FILE.find((file) => fs.existsSync(file));
+
+  if (!filePath) {
+    throw Error("未找到配置文件");
+  } else {
+    console.info(`发现配置文件: ${filePath}`);
+  }
+
+  const configJson = require(path.resolve("./", filePath));
 
   const getConfig = (config) => ({
     ...config,
