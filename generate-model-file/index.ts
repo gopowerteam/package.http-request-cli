@@ -47,6 +47,7 @@ function getDefinitionItems(definitions): any[] {
         !className.startsWith("Map«") &&
         !className.startsWith("Page«") &&
         !className.startsWith("Pageable") &&
+        !className.startsWith("Serializable") &&
         type == "object"
     );
 }
