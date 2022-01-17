@@ -1,6 +1,6 @@
 {
   "name": "@gopowerteam/http-request-cli",
-  "version": "0.4.10",
+  "version": "0.4.11",
   "description": "",
   "main": "dist/index.js",
   "files": [
@@ -18,7 +18,7 @@
     "clean": "rimraf dist/",
     "copy-files": "copyfiles -u 1 templates/**/* dist/templates/",
     "build": "yarn clean && tsc --declaration --esModuleInterop --outDir dist && yarn copy-files",
-    "publish-npm": "npm run build && npm publish --access publish"
+    "npm:publish": "npm run build && npm publish --access publish"
   },
   "bin": {
     "http-request-cli": "./dist/cli.js"

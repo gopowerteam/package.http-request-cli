@@ -105,7 +105,12 @@ function getPropertyType(schema) {
   switch (true) {
     case !!schema.originalRef:
       if (schema.originalRef.startsWith("Map«")) return;
-      return schema.originalRef.replace(/^Page«/, "").replace(/»$/, "[]");
+
+      return schema.originalRef
+        .replace(/^Page«/, "")
+        .replace(/^Iterable«/, "")
+        .replace(/»$/, "[]");
+
     case schema.type === "array":
       const type = getPropertyType(schema.items);
       return type && `${type}[]`;

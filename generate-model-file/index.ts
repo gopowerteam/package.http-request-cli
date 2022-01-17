@@ -46,6 +46,7 @@ function getDefinitionItems(definitions): any[] {
       ({ className, type }) =>
         !className.startsWith("Map«") &&
         !className.startsWith("Page«") &&
+        !className.startsWith("Iterable«") &&
         !className.startsWith("Pageable") &&
         !className.startsWith("Serializable") &&
         type == "object"
