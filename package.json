@@ -1,6 +1,6 @@
 {
   "name": "@gopowerteam/http-request-cli",
-  "version": "0.4.11",
+  "version": "0.4.12",
   "description": "",
   "main": "dist/index.js",
   "files": [
@@ -28,21 +28,21 @@
   },
   "author": "zhuchentong",
   "dependencies": {
-    "chalk": "^4.1.1",
-    "commander": "^7.2.0",
-    "handlebars": "^4.7.7",
-    "mkdirp": "^1.0.4",
-    "node-fetch": "^2.6.1"
+    "chalk": "4.1.1",
+    "commander": "7.2.0",
+    "handlebars": "4.7.7",
+    "mkdirp": "1.0.4",
+    "node-fetch": "2.6.1"
   },
   "devDependencies": {
     "@gopowerteam/http-request": "^0.1.2",
-    "@types/node": "^15.0.2",
-    "copyfiles": "^2.4.1",
-    "rimraf": "^3.0.2",
-    "ts-node": "^9.1.1",
-    "tslib": "^2.2.0",
-    "typescript": "^4.2.4",
-    "vite": "^2.5.0"
+    "@types/node": "15.0.2",
+    "copyfiles": "2.4.1",
+    "rimraf": "3.0.2",
+    "ts-node": "9.1.1",
+    "tslib": "2.2.0",
+    "typescript": "4.2.4",
+    "vite": "2.5.0"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
