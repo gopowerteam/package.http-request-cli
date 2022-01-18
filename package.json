@@ -1,6 +1,6 @@
 {
   "name": "@gopowerteam/http-request-cli",
-  "version": "0.4.12",
+  "version": "0.4.14",
   "description": "",
   "main": "dist/index.js",
   "files": [
@@ -32,7 +32,8 @@
     "commander": "7.2.0",
     "handlebars": "4.7.7",
     "mkdirp": "1.0.4",
-    "node-fetch": "2.6.1"
+    "node-fetch": "2.6.1",
+    "rimraf": "3.0.2"
   },
   "devDependencies": {
     "@gopowerteam/http-request": "^0.1.2",

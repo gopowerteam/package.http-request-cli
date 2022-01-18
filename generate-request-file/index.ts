@@ -6,6 +6,8 @@ import { generateControllerFiles } from "./controller";
 import { generateServiceFiles } from "./service";
 import { info, loadConfig } from "../utils";
 import { generateModelFiles } from "../generate-model-file";
+import { existsSync } from "fs";
+const rimraf = require("rimraf");
 
 const configJson = loadConfig();
 
@@ -26,6 +28,18 @@ registerHelper("replace", function (context, findStr, replaceStr) {
  * 生成服务
  */
 export function generateService(config) {
+  if (config.serviceDir && existsSync(config.serviceDir)) {
+    rimraf(config.serviceDir, (err) => err && console.error(err));
+  }
+
+  if (config.controllerDir && existsSync(config.controllerDir)) {
+    rimraf(config.controllerDir, (err) => err && console.error(err));
+  }
+
+  if (config.modelDir && existsSync(config.modelDir)) {
+    rimraf(config.modelDir, (err) => err && console.error(err));
+  }
+
   const { gateway, services, swagger } = config;
   info("-------------------------");
   info("Gatewat地址", gateway);
@@ -59,17 +73,17 @@ export function generateService(config) {
  * 获取控制器名称
  */
 export function getControllerName(path, currentTag, tags) {
-  // 无法解析
   try {
     const [controller]: [string] =
-      path.match(/(?<=\b\api\/).*(?=\/\b)/g) ??
-      path.match(/(?<=\/).*(?=\/\b)/g);
-
+      path.match(/(?<=\b\api\/).*?(?=\/)/g) ||
+      path.match(/(?<=\b\api\/).*/g) ||
+      path.match(/(?<=\/).*?(?=\/)/g) ||
+      path.match(/(?<=\/).*/g);
     return controller
       .split("/")
       .map((x) => x.replace(/^\S/, (s) => s.toUpperCase()))
       .join("");
-  } catch {
+  } catch (a) {
     throw new Error(`路径:${path}不符合规范`);
   }
 }
