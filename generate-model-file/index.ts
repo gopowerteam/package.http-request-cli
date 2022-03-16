@@ -10,7 +10,7 @@ export const modelTemplatePath = `${TEMPLATE_FOLDER}/model.template.hbs`;
 export const modelExtendTemplatePath = `${TEMPLATE_FOLDER}/model-extend.template.hbs`;
 
 export async function generateModelFiles(service, definitions) {
-  if (!service.config.model || !service.config.modelDir) {
+  if (!service.config.model || !service.config.modelDir || !definitions) {
     return;
   }
 
@@ -36,7 +36,7 @@ function getImportContent() {
 }
 
 function getDefinitionItems(definitions): any[] {
-  return Object.entries(definitions)
+  return Object.entries(definitions || {})
     .map(([className, { type, properties }]: [string, any]) => ({
       className,
       type,
