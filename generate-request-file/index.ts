@@ -7,6 +7,7 @@ import { generateServiceFiles } from "./service";
 import { info, loadConfig } from "../utils";
 import { generateModelFiles } from "../generate-model-file";
 import { existsSync } from "fs";
+import { generateUseRequestFile } from "../generate-use-request-file";
 const rimraf = require("rimraf");
 
 const configJson = loadConfig();
@@ -228,10 +229,10 @@ export function createControllers(
  * @param service
  */
 export function generate(service) {
-  fetch(service.url, { method: "GET" })
+  return fetch(service.url, { method: "GET" })
     .then((res) => res.json()) // expecting a json response
     .then(
-      ({
+      async ({
         tags,
         paths,
         definitions,
@@ -256,17 +257,29 @@ export function generate(service) {
     );
 }
 
-export function generateRequestFile() {
+export async function generateRequestFile() {
   if (!configJson) {
     throw new Error("无法找到配置文件");
   }
 
-  const generateGatewayFile = (config) =>
-    generateService(config).forEach(generate);
+  const generateGatewayFile = (config) => generateService(config).map(generate);
+
   // 多网关处理
-  if (Array.isArray(configJson)) {
-    configJson.forEach(generateGatewayFile);
-  } else {
-    generateGatewayFile(configJson);
-  }
+
+  const configList = Array.isArray(configJson) ? configJson : [configJson];
+
+  await Promise.all(
+    configList.map(generateGatewayFile).reduce((r, i) => r.concat(i), [])
+  );
+
+  configList.forEach((config) => {
+    if (!!config.useRequestFile) {
+      generateUseRequestFile(config.useRequestFile, {
+        dir: config.serviceDir,
+        alias: config.serviceAlias,
+      });
+
+      info("更新use-request文件完成");
+    }
+  });
 }

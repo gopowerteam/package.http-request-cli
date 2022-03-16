@@ -3,6 +3,7 @@ module.exports = {
   gateway: "http://gateway.local.xbt-dev.top",
   swagger: "v2/api-docs",
   model: true,
+  useRequestFile: "./data/use-request.ts",
   modelDir: {
     alias: "@/http/model", // 控制器目录名别
     path: "./data/model", // 控制器目录路径
