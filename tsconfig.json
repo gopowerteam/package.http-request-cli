@@ -10,6 +10,7 @@
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "resolveJsonModule": true,
+    "strictPropertyInitialization": false,
     "sourceMap": false,
     "skipLibCheck": true,
     "baseUrl": ".",

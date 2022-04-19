@@ -55,7 +55,7 @@ function getDefinitionItems(definitions): any[] {
 
 function generateModelContent(className, properties) {
   const templateSource = readFileSync(modelTemplatePath, ENCODING);
-  const template = compile(templateSource);
+  const template = compile(templateSource, { noEscape: true });
 
   return template({
     className: className,
@@ -77,13 +77,21 @@ function getformatProperty(properties) {
 }
 
 function getOriginalRef(propertyConfig) {
-  return propertyConfig?.originalRef || propertyConfig?.items?.originalRef;
+  const ref = propertyConfig?.originalRef || propertyConfig?.items?.originalRef;
+
+  if (ref && ref.startsWith("Map«")) {
+    return;
+  }
+
+  return ref;
 }
 
 function getPropertyType(config) {
   switch (true) {
     case !!config.originalRef:
-      return config.originalRef;
+      return config.originalRef
+        .replace(/^Map«/g, "Record<")
+        .replace(/»$/g, ">");
     case config.type === "integer":
       return "number";
     case config.type === "array":
