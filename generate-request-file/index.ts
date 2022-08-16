@@ -5,10 +5,13 @@ import { registerHelper } from "handlebars";
 import { generateControllerFiles } from "./controller";
 import { generateServiceFiles } from "./service";
 import { info, loadConfig } from "../utils";
-import { generateModelFiles } from "../generate-model-file";
+import {
+  generateOpenAPI2ModelFiles,
+  generateOpenAPI3ModelFiles,
+} from "../generate-model-file";
 import { existsSync } from "fs";
 import { generateUseRequestFile } from "../generate-use-request-file";
-const rimraf = require("rimraf");
+import rimraf from "rimraf";
 
 const configJson = loadConfig();
 
@@ -30,15 +33,15 @@ registerHelper("replace", function (context, findStr, replaceStr) {
  */
 export function generateService(config) {
   if (config.serviceDir && existsSync(config.serviceDir)) {
-    rimraf(config.serviceDir, (err) => err && console.error(err));
+    rimraf.sync(config.serviceDir);
   }
 
   if (config.controllerDir && existsSync(config.controllerDir)) {
-    rimraf(config.controllerDir, (err) => err && console.error(err));
+    rimraf.sync(config.controllerDir);
   }
 
   if (config.modelDir && existsSync(config.modelDir)) {
-    rimraf(config.modelDir, (err) => err && console.error(err));
+    rimraf.sync(config.modelDir);
   }
 
   const { gateway, services, swagger } = config;
@@ -116,7 +119,7 @@ function getAliasName(config, service, key) {
   }
 }
 
-function getPropertyType(schema) {
+function getPropertyTypeOpenAPI2(schema) {
   switch (true) {
     case !!schema.originalRef:
       if (schema.originalRef.startsWith("Map«")) return;
@@ -127,21 +130,43 @@ function getPropertyType(schema) {
         .replace(/»$/, "[]");
 
     case schema.type === "array":
-      const type = getPropertyType(schema.items);
+      const type = getPropertyTypeOpenAPI2(schema.items);
+      return type && `${type}[]`;
+  }
+}
+
+function getPropertyTypeOpenAPI3(schema) {
+  switch (true) {
+    case !!schema.$ref:
+      const ref = schema.$ref.replace("#/components/schemas/", "");
+      if (ref.startsWith("Map")) return;
+      return ref.startsWith("Page")
+        ? ref.replace(/^Page/, "").replace(/$/, "[]")
+        : ref;
+    case schema.type === "array":
+      const type = getPropertyTypeOpenAPI3(schema.items);
       return type && `${type}[]`;
   }
 }
 
 function getActionReponseShema(service, responses) {
-  const response = responses["200"];
-
-  if (!response || !response.schema || !service.config.model) {
+  if (!service.config.model) {
     return;
   }
 
-  const { schema } = response;
+  const response = responses["200"];
 
-  return getPropertyType(schema);
+  if (response && response.schema) {
+    return getPropertyTypeOpenAPI2(response.schema);
+  }
+
+  if (
+    response &&
+    response["application/json"] &&
+    response["application/json"]["schema"]
+  ) {
+    return getPropertyTypeOpenAPI3(response["application/json"]["schema"]);
+  }
 }
 
 /**
@@ -236,10 +261,12 @@ export function generate(service) {
         tags,
         paths,
         definitions,
+        components,
       }: {
         tags: any[];
         paths: { [keys: string]: any };
         definitions: any[];
+        components: any[];
       }) => {
         info("-------------------------");
         info("服务名称", service.name || "无");
@@ -252,7 +279,14 @@ export function generate(service) {
         // 生产文件
         generateControllerFiles(service, controllers);
         generateServiceFiles(service, controllers);
-        generateModelFiles(service, definitions);
+
+        if (definitions && service?.config?.model) {
+          generateOpenAPI2ModelFiles(service, definitions);
+        }
+
+        if (components && service?.config?.model) {
+          generateOpenAPI3ModelFiles(service, components);
+        }
       }
     );
 }

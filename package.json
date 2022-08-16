@@ -1,6 +1,6 @@
 {
   "name": "@gopowerteam/http-request-cli",
-  "version": "0.4.17",
+  "version": "0.4.18",
   "description": "",
   "main": "dist/index.js",
   "files": [
@@ -38,6 +38,7 @@
   "devDependencies": {
     "@gopowerteam/http-request": "^0.1.2",
     "@types/node": "15.0.2",
+    "@types/rimraf": "^3.0.2",
     "copyfiles": "2.4.1",
     "rimraf": "3.0.2",
     "ts-node": "9.1.1",
