@@ -162,10 +162,13 @@ function getActionReponseShema(service, responses) {
 
   if (
     response &&
-    response["application/json"] &&
-    response["application/json"]["schema"]
+    response.content &&
+    response.content["application/json"] &&
+    response.content["application/json"]["schema"]
   ) {
-    return getPropertyTypeOpenAPI3(response["application/json"]["schema"]);
+    return getPropertyTypeOpenAPI3(
+      response.content["application/json"]["schema"]
+    );
   }
 }
 
