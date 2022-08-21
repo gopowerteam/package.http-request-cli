@@ -84,9 +84,11 @@ function getOriginalRef(propertyConfig) {
 }
 
 function getPropertyType(config) {
+  const ref = config.$ref || config["allOf"]?.[0]?.$ref;
+
   switch (true) {
-    case !!config.$ref:
-      return config.$ref.replace("#/components/schemas/", "");
+    case !!ref:
+      return ref.replace("#/components/schemas/", "");
     case config.type === "integer":
       return "number";
     case config.type === "array":
