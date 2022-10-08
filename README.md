@@ -14,6 +14,7 @@
   - [示例](#示例)
   - [配置](#配置)
   - [自定义ControllerResolver](#自定义ControllerResolver)
+  - [自定义ActionResolver](#自定义ActionResolver)
   - [Vite插件支持](#Vite插件支持)
   
 
@@ -114,6 +115,16 @@ module.exports = [
 
 ```json
 controllerResolver: () => "New Name"
+```
+
+## 自定义ActionResolver
+
+默认情况下会通过获取operationId来获取action名称,在一些情况下如果不满足需要可以自定义`ActionResolver`来解决
+
+```javascript
+  actionResolver(operationId, method, path) {
+    return operationId.replace(/\_.*$/g, "");
+  }
 ```
 
 ## Vite插件支持

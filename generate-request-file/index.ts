@@ -203,17 +203,26 @@ export function createControllers(
           method,
           { summary, description, tags: currentTag, operationId, responses },
         ]) => {
+          // 获取Controller Name
           const getController = service.config.controllerResolver
             ? service.config.controllerResolver
             : getControllerName;
           const controllerName = getController(path, currentTag, tags);
+
           const aliasName = getAliasName(
             service.config,
             service.key,
             controllerName
           );
+
           const controller = aliasName || controllerName;
-          const action = getActionName(operationId);
+
+          // 获取Action Name
+          const getAction = service.config.actionResolver
+            ? service.config.actionResolver
+            : getActionName;
+          const action = getAction(operationId, method, path);
+
           const filename = controller
             .replace(/([A-Z])/g, "-$1")
             .replace(/^-/g, "")
